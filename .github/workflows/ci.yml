@@ -1,0 +1,65 @@
+name: Release Validata
+on:
+  push:
+    branches:
+      - master
+      - dev
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '^1.21.4'
+    - run: go version
+
+    - name: Verify dependencies
+      run: go mod verify
+
+    - name: Build
+      run: go build -v ./...
+
+    - name: Run go vet
+      run: go vet ./...
+
+    - name: Install staticcheck
+      run: go install honnef.co/go/tools/cmd/staticcheck@latest
+    - name: Run Static Check
+      run: staticcheck ./...
+
+    - name: Install golint
+      run: go install golang.org/x/lint/golint@latest
+    - name: Run golint
+      run: golint ./...
+
+    - name: Run Tests
+      run: go test -race -vet=off ./...
+  
+  release:
+    if: ${{github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Release
+        uses: codfish/semantic-release-action@v2
+        with:
+          dry_run: false
+          branches: |
+            [
+              '+([0-9])?(.{+([0-9]),x}).x',
+              'master'
+            ]
+          repository_url: https://github.com/SeyramWood/valid.git
+          tag_format: 'v${version}'
+          extends: '@semantic-release/apm-config'
+          additional_packages: |
+            ['@semantic-release/git']
+          plugins: |
+            ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', '@semantic-release/github', '@semantic-release/git']
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
