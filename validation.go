@@ -621,6 +621,7 @@ func (v *validation) validateStruct(index int, msgChan chan message, wg *sync.Wa
 				case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
 					errMsgs := make([]any, 0, value.Len())
 					for i := 1; i <= value.Len(); i++ {
+						value := value.Index(i - 1)
 						switch rule {
 						case "int":
 							if isNotInt(value) {
@@ -686,6 +687,7 @@ func (v *validation) validateStruct(index int, msgChan chan message, wg *sync.Wa
 				case reflect.Float32, reflect.Float64:
 					errMsgs := make([]any, 0, value.Len())
 					for i := 1; i <= value.Len(); i++ {
+						value := value.Index(i - 1)
 						switch rule {
 						case "float":
 							if isNotFloat(value) {
