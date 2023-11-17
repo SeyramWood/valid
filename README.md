@@ -1,5 +1,5 @@
 
-## About Validata
+## About Valid
 
 Valid is a robust and extensible validation library for handling data and input validation in Go applications. It simplifies the process of validating user inputs, structs, etc., making it easier to ensure data integrity and security in your projects.
 
