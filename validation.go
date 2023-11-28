@@ -1,7 +1,11 @@
+// Package valid is a robust and extensible validation library.
+//
+// This package handle data and input validation in Go applications.
 package valid
 
 import (
 	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	"io"
 	"mime/multipart"
@@ -120,14 +124,38 @@ func (v *validation) ValidateRequest(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
-		if strings.HasPrefix(r.Header.Get("Content-Type"), "multipart") {
+		if strings.HasPrefix(r.Header.Get("Content-Type"), "multipart/form-data") || strings.HasPrefix(r.Header.Get("Content-Type"), "application/x-www-form-urlencoded") {
 			decodeMultipart(r, v.elem)
-		} else if r.Header.Get("Content-Type") == "application/json" {
+		} else if strings.HasPrefix(r.Header.Get("Content-Type"), "application/json") {
 			body, _ := io.ReadAll(r.Body)
-			json.Unmarshal(body, v.elem)
+			if err := json.Unmarshal(body, v.elem); err != nil {
+				resByte, _ := json.Marshal(map[string]any{
+					"status":  false,
+					"message": fmt.Sprintf("failed to unmarshal: %s", err.Error()),
+				})
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusBadRequest)
+				w.Write(resByte)
+				return
+			}
+		} else if strings.HasPrefix(r.Header.Get("Content-Type"), "text/xml") || strings.HasPrefix(r.Header.Get("Content-Type"), "application/xml") {
+			body, _ := io.ReadAll(r.Body)
+			if err := xml.Unmarshal(body, v.elem); err != nil {
+				resByte, _ := json.Marshal(map[string]any{
+					"status":  false,
+					"message": fmt.Sprintf("failed to unmarshal: %s", err.Error()),
+				})
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusBadRequest)
+				w.Write(resByte)
+				return
+			}
 		} else {
 			v.jsonRes.Status = false
-			resByte, _ := json.Marshal([]byte(fmt.Sprintf("%s not supported", r.Header.Get("Content-Type"))))
+			resByte, _ := json.Marshal(map[string]any{
+				"status":  false,
+				"message": fmt.Sprintf("content-type: %s, not supported.", r.Header.Get("Content-Type")),
+			})
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write(resByte)

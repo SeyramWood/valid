@@ -291,6 +291,11 @@ func isNotDatetime(v reflect.Value, kind string) bool {
 			return true
 		}
 		return false
+	case "timeonly":
+		if _, err := time.Parse(time.TimeOnly, v.String()); err != nil {
+			return true
+		}
+		return false
 	default:
 		panic(fmt.Sprintf("date format not supported: %s", kind))
 	}
