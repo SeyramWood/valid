@@ -1,11 +1,11 @@
 
 ## About Valid
 
-Valid is a robust and extensible validation library for handling data and input validation in Go applications. It simplifies the process of validating user inputs, structs, etc., making it easier to ensure data integrity and security in your projects.
+Valid is a robust and extensible validation library for handling data and input validation in Go applications. It simplifies the process of validating user inputs, structs, etc., making it easier to ensure data integrity and validity in Golang projects.
 
 ## Contributing
 
-Thank you for considering contributing to the Valid package.
+Thank you for considering contributing to the Valid package. [seyramprikah@gmail.com](mailto:seyramprikah@gmail.com).
 
 ## License
 
