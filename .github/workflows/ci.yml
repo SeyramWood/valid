@@ -1,4 +1,4 @@
-name: Release Validata
+name: Release Valid
 on:
   push:
     branches:
