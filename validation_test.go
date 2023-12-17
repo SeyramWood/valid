@@ -33,7 +33,7 @@ func TestMain(m *testing.M) {
 		Username:    "admin@foodivoire.com",
 		Terms:       false,
 		Items:       []string{"quis Ut", "nulla amet cupidatat", "consectetur in", "veniam", "laboris incididunt ut culpa"},
-		Contact:     &TestDeepStruct{Name: "Wood White", Phone: "+233265518694", Email: "contact@mail.com"},
+		Contact:     &TestDeepStruct{Name: "Wood White", Phone: "++233265518694", Email: "contact@mail.com"},
 		Contacts:    []*TestDeepStruct{{Name: "Wood Williams", Phone: "+2332655186949999", Email: "contact@mail.com"}, {Name: "Wood White", Phone: "+233265518694", Email: "contact@example.com"}},
 		Allergy:     []int{34359738368, 34359738369},
 	}
