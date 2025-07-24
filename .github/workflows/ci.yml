@@ -46,7 +46,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Release
-        uses: codfish/semantic-release-action@v2
+        uses: codfish/semantic-release-action@v3
         with:
           dry_run: false
           branches: |
@@ -60,6 +60,32 @@ jobs:
           additional_packages: |
             ['@semantic-release/git']
           plugins: |
-            ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', '@semantic-release/github', '@semantic-release/git']
+            [
+              '@semantic-release/commit-analyzer', 
+              [
+                '@semantic-release/release-notes-generator'
+                {
+                  "preset": "conventionalcommits",
+                  "presetConfig": {
+                    "types": [
+                      { type: 'feat', section: 'Features', hidden: false },
+                      { type: 'fix', section: 'Bug Fixes', hidden: false },
+                      { type: 'perf', section: 'Performance Improvements', hidden: false },
+                      { type: 'revert', section: 'Reverts', hidden: false },
+                      { type: 'docs', section: 'Other Updates', hidden: false },
+                      { type: 'style', section: 'Other Updates', hidden: false },
+                      { type: 'chore', section: 'Other Updates', hidden: false },
+                      { type: 'refactor', section: 'Other Updates', hidden: false },
+                      { type: 'test', section: 'Other Updates', hidden: false },
+                      { type: 'build', section: 'Other Updates', hidden: false },
+                      { type: 'ci', section: 'Other Updates', hidden: false }
+                    ]
+                  }
+                }
+              ],
+              '@semantic-release/npm',
+              '@semantic-release/github', 
+              '@semantic-release/git'
+            ]
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
