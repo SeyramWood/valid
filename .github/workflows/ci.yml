@@ -58,7 +58,7 @@ jobs:
           tag_format: 'v${version}'
           extends: '@semantic-release/apm-config'
           additional_packages: |
-            ['@semantic-release/git']
+            ['@semantic-release/git', 'conventional-changelog-conventionalcommits@7']
           plugins: |
             [
               '@semantic-release/commit-analyzer', 
