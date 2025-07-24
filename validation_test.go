@@ -21,6 +21,7 @@ type TestStruct struct {
 	Contact     *TestDeepStruct   `json:"contact" validate:"_"`
 	Contacts    []*TestDeepStruct `json:"contacts" validate:"required|min:1"`
 	Allergy     []int             `json:"allergy" validate:"int"`
+	UserType    string            `json:"userType" validate:"required|string|enum:admin,user"`
 }
 
 var myLogger = log.New(os.Stdout, "Message:\t", log.Ldate|log.Ltime|log.Lshortfile)
@@ -36,6 +37,7 @@ func TestMain(m *testing.M) {
 		Contact:     &TestDeepStruct{Name: "Wood White", Phone: "++233265518694", Email: "contact@mail.com"},
 		Contacts:    []*TestDeepStruct{{Name: "Wood Williams", Phone: "+2332655186949999", Email: "contact@mail.com"}, {Name: "Wood White", Phone: "+233265518694", Email: "contact@example.com"}},
 		Allergy:     []int{34359738368, 34359738369},
+		UserType:    "userr",
 	}
 
 	myLogger.Println(New().ValidateStruct(request))

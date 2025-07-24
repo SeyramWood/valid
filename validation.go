@@ -215,9 +215,9 @@ func (v *validation) structValidator() map[string]any {
 	return nil
 }
 
-func (v *validation) mapValidator() map[string]any {
-	panic("implement me")
-}
+// func (v *validation) mapValidator() map[string]any {
+// 	panic("implement me")
+// }
 
 func (v *validation) validateStruct(index int, msgChan chan message, wg *sync.WaitGroup) {
 	defer wg.Done()
@@ -346,6 +346,12 @@ func (v *validation) validateStruct(index int, msgChan chan message, wg *sync.Wa
 								v.setMessage("between.string", customMsg, jsonTag, formattedField, msgChan, minMax[0], minMax[1])
 								return
 							}
+						case "enum":
+							eunms := strings.Split(rSlice[1], ",")
+							if isNotEnum(value, eunms) {
+								v.setMessage("enum", customMsg, jsonTag, formattedField, msgChan, rSlice[1])
+								return
+							}
 						case "same":
 							tag, val := v.getTagAndValue(rSlice[1])
 							if isNotSame(value, val) {
@@ -416,6 +422,12 @@ func (v *validation) validateStruct(index int, msgChan chan message, wg *sync.Wa
 								v.setMessage("between.numeric", customMsg, jsonTag, formattedField, msgChan, minMax[0], minMax[1])
 								return
 							}
+						case "enum":
+							eunms := strings.Split(rSlice[1], ",")
+							if isNotEnum(value, eunms) {
+								v.setMessage("enum", customMsg, jsonTag, formattedField, msgChan, rSlice[1])
+								return
+							}
 						case "same":
 							tag, val := v.getTagAndValue(rSlice[1])
 							if isNotSame(value, val) {
@@ -473,6 +485,12 @@ func (v *validation) validateStruct(index int, msgChan chan message, wg *sync.Wa
 							minMax := strings.SplitN(rSlice[1], ",", 2)
 							if isNotBetween(value, minMax[0], minMax[1]) {
 								v.setMessage("between.numeric", customMsg, jsonTag, formattedField, msgChan, minMax[0], minMax[1])
+								return
+							}
+						case "enum":
+							eunms := strings.Split(rSlice[1], ",")
+							if isNotEnum(value, eunms) {
+								v.setMessage("enum", customMsg, jsonTag, formattedField, msgChan, rSlice[1])
 								return
 							}
 						case "same":

@@ -8,6 +8,7 @@ import (
 	"net/mail"
 	"reflect"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -185,6 +186,9 @@ func isNotBetween(v reflect.Value, min, max string) bool {
 		return !(v.Float() > minVal && v.Float() < maxVal)
 	}
 	return false
+}
+func isNotEnum(v reflect.Value, eunms any) bool {
+	return !slices.Contains(eunms.([]string), v.Interface().(string))
 }
 func isNotFrom(v reflect.Value, min, max string) bool {
 	switch v.Kind() {

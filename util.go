@@ -97,8 +97,8 @@ func connectDB(config *Database) *sql.DB {
 			config.Host,
 			config.Port,
 			config.Username,
-			config.Name,
 			config.Password,
+			config.Name,
 			SSLMode,
 		)
 		db, err := sql.Open(config.Driver, dsn)

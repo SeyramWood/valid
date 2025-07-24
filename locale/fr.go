@@ -25,6 +25,7 @@ var FR = map[string]any{
 	"mimes":           "Le champ %s doit être un fichier du type : %s.",
 	"gh_card":         "Le champ %s doit être une carte d'identité du Ghana valide.",
 	"gh_gps":          "Le champ %s doit être une adresse numérique du Ghana valide.",
+	"enum":            "Le champ %s n’est pas valide. Valeurs autorisées : %s.",
 	"gt": map[string]string{
 		"numeric": "Le champ %s doit être supérieur à %s.",
 		"file":    "Le champ %s doit être supérieur à %s mégaoctets.",

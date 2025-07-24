@@ -25,6 +25,7 @@ var EN = map[string]any{
 	"mimes":           "The %s must be a file of type: %s.",
 	"gh_card":         "The %s must be a valid Ghana Card.",
 	"gh_gps":          "The %s must be a valid Ghana digital address.",
+	"enum":            "The %s must be one of the following: %s.",
 	"gt": map[string]string{
 		"numeric": "The %s must be greater than %s.",
 		"file":    "The %s must be greater than %s megabytes.",
