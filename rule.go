@@ -267,9 +267,11 @@ func isNotMimes(v reflect.Value, mimes string) bool {
 func isNotUnique(dbConfig *Database, value, field, table string) bool {
 	db := connectDB(dbConfig)
 	defer db.Close()
-
 	dbField := snakeCase(field)
 	queryStr := fmt.Sprintf("SELECT %s FROM %s WHERE %s=?", dbField, table, dbField)
+	if dbConfig.Driver == DriverPostgres {
+		queryStr = fmt.Sprintf("SELECT 1 FROM %s WHERE %s=$1", table, dbField)
+	}
 	if err := db.QueryRow(queryStr, value).Scan(&value); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return false
